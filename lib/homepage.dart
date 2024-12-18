@@ -1,6 +1,9 @@
 import 'package:calculator/button_model.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:provider/provider.dart';
+
+import 'themes/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,14 +27,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return Scaffold(
-      backgroundColor: Colors.pink.shade100,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         title: Text('Standard Calculator'),
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            ToggleButtons(
+              children: [
+                Icon(Icons.light_mode),
+                Icon(Icons.dark_mode_outlined)
+              ],
+              onPressed: (int index){
+                Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+              },
+              isSelected: [
+                !isDarkMode, isDarkMode
+              ],
+            ),
+          ],
+        ),
+      ),
 
       body: SafeArea(
         child: Column(
@@ -41,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(20.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.pink.shade200,
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
@@ -71,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               )
             ),
-        
+
             Expanded(
               flex: 2,
               child: Padding(
@@ -82,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   itemCount: _labels.length,
                   itemBuilder: (context, index){
-        
+
                     if(index == 0 || index == 1){
                       return MyButton(
                         onTap: (){
@@ -97,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                           });
                         },
                         buttonText: _labels[index],
-                        color: Colors.pink.shade800,
-                        textColor: Colors.pink.shade100,
+                        color: Theme.of(context).colorScheme.primary,
+                        textColor: Theme.of(context).scaffoldBackgroundColor,
                       );
                     }
                     else if(index == _labels.length - 2 || index == _labels.length - 1){
@@ -114,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                           });
                         },
                         buttonText: _labels[index],
-                        color: Colors.pink,
+                        color: Theme.of(context).colorScheme.tertiary,
                         textColor: Colors.white,
                       );
                     }
@@ -126,16 +148,16 @@ class _HomePageState extends State<HomePage> {
                           });
                         },
                         buttonText: _labels[index],
-        
+
                         color: isOperator(_labels[index]) ?
-                        Colors.pink.shade200 : Colors.pinkAccent,
-        
+                        Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.inversePrimary,
+
                         textColor: isOperator(_labels[index]) ?
-                        Colors.pink.shade800 : Colors.white,
+                        Theme.of(context).colorScheme.primary : Colors.white,
                       );
                     }
-        
-        
+
+
                   }
                 ),
               )
