@@ -9,7 +9,8 @@ class ThemeProvider with ChangeNotifier{
   ThemeData get themeData => _themeData;
 
   // check if current theme is dark
-  bool get isDarkMode => _themeData.brightness == Brightness.dark;
+
+  bool get isDarkMode => themeData == darkMode;
 
   // create setter to set a new value
   set themeData(ThemeData themeData){
@@ -24,5 +25,7 @@ class ThemeProvider with ChangeNotifier{
     else{
       themeData = lightMode;
     }
+    print("Theme changed: ${_themeData.brightness}");
+    notifyListeners();
   }
 }

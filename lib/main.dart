@@ -16,8 +16,7 @@ class CalculatorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
       theme: Provider.of<ThemeProvider>(context).themeData,
